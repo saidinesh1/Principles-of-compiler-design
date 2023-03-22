@@ -588,9 +588,11 @@ class TAC_generator:
 
                 return G
             case 25:
-                A=RHS.pop()
+                
+                X=StackItem("X")
+                X.next=[self.nextQuad()]
                 self.gen("goto")
-                return StackItem("X")
+                return X
 
     def generateTAC(self):
         output=''
