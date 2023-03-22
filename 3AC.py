@@ -1,5 +1,4 @@
 from itertools import count
-
 # Grammar Productions
 productions = [
     ["P'", 'P'],
@@ -585,13 +584,18 @@ class TAC_generator:
                 return G
 
     def generateTAC(self):
+        output=''
         if self.parse_input_tokens():
             i = 0
             for line in self.code:
                 print(f"{i:>4}:  ", end="")
+                output+=str(f"{i:>4}:")
                 print(line)
+                output+=line+'\n'
                 i += 1
             print(f"{i:>4}:  ")
+            output+=str(f"{i:>4}:  ")
+        return output
 
     def parse_input_tokens(self):
         stack = [0]
@@ -644,7 +648,42 @@ class TAC_generator:
 
 
 # Input to be parsed
-input_string = "for id = id + id ; id relop id ; id = id + id do while id relop id do id = id + id * id"
+# input_string = "for id = id + id ; id relop id ; id = id + id do while id relop id do id = id + id * id"
 
-tac = TAC_generator(input_string, productions, action_table, goto_table)
-tac.generateTAC()
+# tac = TAC_generator(input_string, productions, action_table, goto_table)
+# tac.generateTAC()
+
+
+from tkinter import *
+from tkinter import ttk
+
+#Create an instance of Tkinter frame
+win= Tk()
+win.geometry("800x500")
+
+def display_text():
+   global entry
+   string= entry.get()
+   three_A_C=TAC_generator(string, productions, action_table, goto_table)
+   code=three_A_C.generateTAC()
+
+   label.insert('1.0',code)
+   
+def clear_text():
+    label.delete("1.0",END)
+#Initialize a Label to display the User Input
+label=Text(win,font=("Courier 9 bold"))
+label.place(x=200,y=130,height=350,width=400)
+
+#Create an Entry widget to accept User Input
+Input_label=Label(win,text="Input",font="Courier 15 bold")
+Input_label.place(x=10,y=25)
+entry= Entry(win, width= 120)
+entry.focus_set()
+entry.place(x=100,y=30,width=600)
+
+#Create a Button to validate Entry Widget
+ttk.Button(win, text= "Generate",width= 20, command= display_text).place(x=200,y=80)
+ttk.Button(win,text="clear",width= 20, command= clear_text).place(x=400,y=80)
+win.mainloop()
+
